@@ -106,138 +106,186 @@ async def homepage():
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vera Bot — magicpin AI Challenge</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-  * {{ margin: 0; padding: 0; box-sizing: border-box; }}
-  body {{ font-family: 'Inter', sans-serif; background: #f8f9fb; color: #111827; min-height: 100vh; }}
-  .hero {{ background: #ffffff; border-bottom: 1px solid #e5e7eb; padding: 40px 24px 32px; text-align: center; }}
-  .logo-ring {{ width: 56px; height: 56px; border-radius: 50%; background: #eff6ff; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 24px; }}
-  h1 {{ font-size: 22px; font-weight: 600; color: #111827; margin-bottom: 4px; }}
-  .subtitle {{ color: #6b7280; font-size: 14px; }}
-  .badge {{ display: inline-flex; align-items: center; gap: 6px; background: #f0fdf4; color: #15803d; padding: 4px 12px; border-radius: 8px; font-size: 12px; font-weight: 500; margin-top: 14px; border: 1px solid #bbf7d0; }}
-  .ping {{ width: 7px; height: 7px; background: #22c55e; border-radius: 50%; animation: pulse 2s infinite; }}
-  @keyframes pulse {{ 0%,100%{{opacity:1;}} 50%{{opacity:0.3;}} }}
-  .container {{ max-width: 1040px; margin: 0 auto; padding: 28px 20px; }}
-  .grid3 {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 20px; }}
-  @media(max-width:640px) {{ .grid3 {{ grid-template-columns: 1fr; }} }}
-  .card {{ background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; }}
-  .card-label {{ font-size: 11px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; }}
-  .stat-row {{ display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid #f3f4f6; font-size: 13px; color: #374151; }}
-  .stat-row:last-child {{ border-bottom: none; }}
-  .stat-val {{ font-weight: 600; color: #16a34a; }}
-  .endpoint {{ display: flex; align-items: center; gap: 10px; padding: 9px 12px; background: #f9fafb; border-radius: 8px; margin-bottom: 6px; font-size: 12px; font-family: monospace; color: #374151; }}
-  .method {{ padding: 2px 8px; border-radius: 4px; font-weight: 600; font-size: 10px; font-family: 'Inter', sans-serif; }}
-  .get {{ background: #f0fdf4; color: #15803d; }}
-  .post {{ background: #eff6ff; color: #1d4ed8; }}
-  .form-field {{ display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }}
-  .form-field label {{ font-size: 12px; color: #6b7280; }}
-  .form-field select {{ background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 8px 12px; color: #111827; font-family: 'Inter', sans-serif; font-size: 13px; outline: none; }}
-  .form-field select:focus {{ border-color: #93c5fd; }}
-  #btn-start {{ width: 100%; padding: 9px; font-size: 13px; font-weight: 600; margin-top: 6px; background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; border-radius: 8px; cursor: pointer; font-family: 'Inter', sans-serif; transition: background 0.15s; }}
-  #btn-start:hover:not(:disabled) {{ background: #dbeafe; }}
-  #btn-start:disabled {{ opacity: 0.45; cursor: not-allowed; }}
-  #ctx-summary {{ margin-top: 12px; font-size: 11px; font-family: monospace; color: #16a34a; line-height: 1.8; }}
-  .loader-status {{ font-size: 12px; color: #6b7280; margin-bottom: 14px; line-height: 1.8; }}
-  .chat-card {{ background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; margin-bottom: 20px; }}
-  .chat-header {{ padding: 14px 20px; border-bottom: 1px solid #f3f4f6; font-size: 11px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.06em; }}
-  .messages {{ height: 280px; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; background: #f8f9fb; }}
-  .msg {{ padding: 10px 14px; border-radius: 12px; max-width: 82%; font-size: 13px; line-height: 1.55; }}
-  .msg.vera {{ background: #ffffff; border: 1px solid #e5e7eb; align-self: flex-start; border-bottom-left-radius: 4px; color: #111827; }}
-  .msg.user {{ background: #eff6ff; border: 1px solid #bfdbfe; align-self: flex-end; border-bottom-right-radius: 4px; color: #1d4ed8; }}
-  .msg .label {{ font-size: 10px; font-weight: 600; color: #9ca3af; margin-bottom: 4px; }}
-  .msg.user .label {{ color: #60a5fa; }}
-  .input-row {{ display: flex; gap: 10px; padding: 14px 16px; border-top: 1px solid #f3f4f6; }}
-  .input-row input {{ flex: 1; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 9px 14px; color: #111827; font-family: 'Inter', sans-serif; font-size: 13px; outline: none; }}
-  .input-row input:focus {{ border-color: #93c5fd; }}
-  .input-row button {{ background: #1d4ed8; color: white; border: none; border-radius: 8px; padding: 9px 20px; cursor: pointer; font-weight: 600; font-size: 13px; font-family: 'Inter', sans-serif; transition: background 0.15s; }}
-  .input-row button:hover {{ background: #1e40af; }}
-  .arch-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }}
-  .arch-tile {{ background: #f9fafb; border-radius: 8px; padding: 14px; }}
-  .arch-tile .at-label {{ font-size: 11px; color: #9ca3af; margin-bottom: 4px; }}
-  .arch-tile .at-val {{ font-size: 13px; font-weight: 500; color: #111827; }}
-  .footer {{ text-align: center; color: #9ca3af; font-size: 12px; padding: 20px; }}
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+  *{{margin:0;padding:0;box-sizing:border-box;}}
+  body{{font-family:'Inter',sans-serif;background:#faf7f2;color:#1c1917;min-height:100vh;}}
+  .layout{{display:grid;grid-template-columns:260px 1fr;min-height:100vh;}}
+  @media(max-width:720px){{.layout{{grid-template-columns:1fr;}}  .sidebar{{display:none;}}}}
+  .sidebar{{background:#1c1917;color:#e7e5e4;padding:28px 20px;display:flex;flex-direction:column;gap:24px;}}
+  .sidebar-logo{{display:flex;align-items:center;gap:10px;padding-bottom:20px;border-bottom:1px solid #292524;}}
+  .bot-icon{{width:36px;height:36px;background:#d97706;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}}
+  .bot-name{{font-size:15px;font-weight:600;color:#fafaf9;}}
+  .bot-sub{{font-size:11px;color:#78716c;margin-top:2px;}}
+  .sidebar-section{{display:flex;flex-direction:column;gap:6px;}}
+  .sidebar-label{{font-size:10px;font-weight:600;color:#57534e;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;}}
+  .stat-item{{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;border-radius:6px;font-size:12px;}}
+  .stat-item:hover{{background:#292524;}}
+  .stat-item span:first-child{{color:#a8a29e;}}
+  .stat-item span:last-child{{color:#fbbf24;font-weight:500;font-family:'JetBrains Mono',monospace;font-size:11px;}}
+  .ep{{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:6px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#a8a29e;}}
+  .ep:hover{{background:#292524;color:#e7e5e4;}}
+  .m{{padding:2px 6px;border-radius:3px;font-size:9px;font-weight:600;font-family:'Inter',sans-serif;}}
+  .get{{background:#14532d;color:#86efac;}}
+  .post{{background:#78350f;color:#fcd34d;}}
+  .ping-row{{display:flex;align-items:center;gap:8px;padding:10px;background:#292524;border-radius:8px;font-size:12px;color:#a8a29e;}}
+  .ping{{width:7px;height:7px;background:#22c55e;border-radius:50%;animation:pulse 2s infinite;flex-shrink:0;}}
+  @keyframes pulse{{0%,100%{{opacity:1;}}50%{{opacity:0.3;}}}}
+  .main{{padding:32px 28px;display:flex;flex-direction:column;gap:20px;}}
+  .top-bar{{display:flex;align-items:center;justify-content:space-between;padding-bottom:20px;border-bottom:1px solid #e7e5e4;}}
+  .page-title{{font-size:20px;font-weight:600;color:#1c1917;}}
+  .page-sub{{font-size:13px;color:#78716c;margin-top:2px;}}
+  .badge{{display:inline-flex;align-items:center;gap:6px;background:#fef3c7;color:#92400e;border:1px solid #fde68a;padding:5px 12px;border-radius:20px;font-size:11px;font-weight:600;}}
+  .row2{{display:grid;grid-template-columns:1fr 1fr;gap:16px;}}
+  @media(max-width:600px){{.row2{{grid-template-columns:1fr;}}}}
+  .card{{background:#ffffff;border:1px solid #e7e5e4;border-radius:12px;padding:20px;}}
+  .card-head{{font-size:11px;font-weight:600;color:#a8a29e;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:16px;}}
+  .form-row{{margin-bottom:12px;}}
+  .form-row label{{display:block;font-size:11px;color:#78716c;margin-bottom:5px;font-weight:500;}}
+  .form-row select{{width:100%;background:#faf7f2;border:1px solid #e7e5e4;border-radius:7px;padding:8px 10px;font-size:13px;color:#1c1917;font-family:'Inter',sans-serif;outline:none;}}
+  .form-row select:focus{{border-color:#d97706;box-shadow:0 0 0 2px #fef3c7;}}
+  .loader-txt{{font-size:12px;color:#a8a29e;line-height:1.9;margin-bottom:12px;font-family:'JetBrains Mono',monospace;}}
+  #btn-start{{width:100%;padding:9px;background:#d97706;color:#ffffff;border:none;border-radius:7px;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;margin-top:6px;transition:background 0.15s;}}
+  #btn-start:hover:not(:disabled){{background:#b45309;}}
+  #btn-start:disabled{{opacity:0.4;cursor:not-allowed;}}
+  #ctx-summary{{margin-top:12px;font-size:11px;font-family:'JetBrains Mono',monospace;color:#b45309;line-height:1.8;background:#fef3c7;border-radius:6px;padding:8px 10px;display:none;}}
+  .metrics{{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}}
+  .metric{{background:#faf7f2;border-radius:8px;padding:14px;text-align:center;}}
+  .metric .mv{{font-size:22px;font-weight:600;color:#d97706;font-family:'JetBrains Mono',monospace;}}
+  .metric .ml{{font-size:11px;color:#78716c;margin-top:3px;}}
+  .chat-wrap{{background:#ffffff;border:1px solid #e7e5e4;border-radius:12px;overflow:hidden;}}
+  .chat-head{{background:#1c1917;padding:14px 18px;display:flex;align-items:center;gap:10px;}}
+  .chat-head-dot{{width:8px;height:8px;border-radius:50%;}}
+  .chat-head span{{font-size:12px;font-weight:500;color:#a8a29e;margin-left:4px;}}
+  .msgs{{height:300px;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px;background:#faf7f2;}}
+  .msg{{padding:11px 14px;border-radius:10px;max-width:80%;font-size:13px;line-height:1.55;}}
+  .msg.vera{{background:#ffffff;border:1px solid #e7e5e4;align-self:flex-start;border-bottom-left-radius:3px;color:#1c1917;}}
+  .msg.user{{background:#1c1917;border:1px solid #292524;align-self:flex-end;border-bottom-right-radius:3px;color:#e7e5e4;}}
+  .msg .lbl{{font-size:10px;font-weight:600;margin-bottom:4px;}}
+  .msg.vera .lbl{{color:#d97706;}}
+  .msg.user .lbl{{color:#78716c;}}
+  .inp-row{{display:flex;gap:10px;padding:12px 16px;border-top:1px solid #e7e5e4;background:#ffffff;}}
+  .inp-row input{{flex:1;background:#faf7f2;border:1px solid #e7e5e4;border-radius:7px;padding:9px 14px;font-size:13px;color:#1c1917;font-family:'Inter',sans-serif;outline:none;}}
+  .inp-row input:focus{{border-color:#d97706;box-shadow:0 0 0 2px #fef3c7;}}
+  .inp-row button{{background:#d97706;color:#fff;border:none;border-radius:7px;padding:9px 20px;font-size:13px;font-weight:600;font-family:'Inter',sans-serif;cursor:pointer;transition:background 0.15s;}}
+  .inp-row button:hover{{background:#b45309;}}
+  .arch-tiles{{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;}}
+  .at{{background:#faf7f2;border-radius:8px;padding:12px 14px;border-left:3px solid #d97706;border-radius:0;}}
+  .at .atl{{font-size:10px;color:#a8a29e;font-weight:500;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;}}
+  .at .atv{{font-size:12px;color:#1c1917;font-weight:500;}}
+  .footer{{font-size:11px;color:#a8a29e;text-align:center;padding:16px 0 8px;}}
 </style>
 </head>
 <body>
+<div class="layout">
 
-<div class="hero">
-  <div class="logo-ring">🤖</div>
-  <h1>Vera Bot</h1>
-  <p class="subtitle">magicpin AI Challenge — Merchant Intelligence Engine</p>
-  <div class="badge"><span class="ping"></span>Live · Gemini 2.0 Flash · 30/30 tests passing</div>
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="bot-icon">V</div>
+      <div>
+        <div class="bot-name">Vera Bot</div>
+        <div class="bot-sub">magicpin AI Challenge</div>
+      </div>
+    </div>
+
+    <div class="ping-row">
+      <span class="ping"></span>
+      <span>Gemini 2.0 Flash · live</span>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">System stats</div>
+      <div class="stat-item"><span>Status</span><span>online</span></div>
+      <div class="stat-item"><span>Uptime</span><span>{uptime}s</span></div>
+      <div class="stat-item"><span>Tests</span><span>30/30</span></div>
+      <div class="stat-item"><span>Categories</span><span>{counts['category']}</span></div>
+      <div class="stat-item"><span>Merchants</span><span>{counts['merchant']}</span></div>
+      <div class="stat-item"><span>Triggers</span><span>{counts['trigger']}</span></div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-label">Endpoints</div>
+      <div class="ep"><span class="m get">GET</span>/v1/healthz</div>
+      <div class="ep"><span class="m get">GET</span>/v1/metadata</div>
+      <div class="ep"><span class="m post">POST</span>/v1/context</div>
+      <div class="ep"><span class="m post">POST</span>/v1/tick</div>
+      <div class="ep"><span class="m post">POST</span>/v1/reply</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="top-bar">
+      <div>
+        <div class="page-title">Merchant Intelligence Engine</div>
+        <div class="page-sub">Configure a context and chat with Vera</div>
+      </div>
+      <div class="badge"><span class="ping"></span>30/30 tests passing</div>
+    </div>
+
+    <div class="row2">
+      <div class="card">
+        <div class="card-head">Context initialization</div>
+        <div id="loader-status" class="loader-txt">
+          <div>› loading coCategories...</div>
+          <div>› loading merchants...</div>
+          <div>› loading triggers...</div>
+        </div>
+        <div class="form-row">
+          <label for="conf-cat">coCategory</label>
+          <select id="conf-cat" onchange="onContextChange()" disabled><option value="">— loading —</option></select>
+        </div>
+        <div class="form-row">
+          <label for="conf-merchant">Merchant</label>
+          <select id="conf-merchant" onchange="onContextChange()" disabled><option value="">— loading —</option></select>
+        </div>
+        <div class="form-row">
+          <label for="conf-trigger">Trigger</label>
+          <select id="conf-trigger" onchange="onContextChange()" disabled><option value="">— loading —</option></select>
+        </div>
+        <button id="btn-start" onclick="startChat()" disabled>Start chat</button>
+        <div id="ctx-summary"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">Dataset overview</div>
+        <div class="metrics">
+          <div class="metric"><div class="mv" id="s-cat">{counts['category']}</div><div class="ml">Categories</div></div>
+          <div class="metric"><div class="mv" id="s-mer">{counts['merchant']}</div><div class="ml">Merchants</div></div>
+          <div class="metric"><div class="mv" id="s-trg">{counts['trigger']}</div><div class="ml">Triggers</div></div>
+        </div>
+        <div style="margin-top:20px;">
+          <div class="card-head">Architecture</div>
+          <div class="arch-tiles">
+            <div class="at"><div class="atl">Trigger kinds</div><div class="atv">25 / 25</div></div>
+            <div class="at"><div class="atl">Composition</div><div class="atv">Gemini 2.0 Flash + rules</div></div>
+            <div class="at"><div class="atl">Reply modes</div><div class="atv">Auto · Opt-out · Transition</div></div>
+            <div class="at"><div class="atl">Constraints</div><div class="atv">≤320 chars · no URLs</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="chat-wrap">
+      <div class="chat-head">
+        <span class="chat-head-dot" style="background:#ef4444;"></span>
+        <span class="chat-head-dot" style="background:#f59e0b;"></span>
+        <span class="chat-head-dot" style="background:#22c55e;"></span>
+        <span>vera — merchant ai chat</span>
+      </div>
+      <div class="msgs" id="msgs">
+        <div class="msg vera">
+          <div class="lbl">Vera</div>
+          Hi! I'm Vera, magicpin's merchant AI. Ask me anything about your business — footfall, offers, customer recalls, or performance insights. Try: <em>"What should I do if my calls dropped 50%?"</em>
+        </div>
+      </div>
+      <div class="inp-row">
+        <input id="inp" type="text" placeholder="Ask Vera something…" onkeydown="if(event.key==='Enter')send()">
+        <button onclick="send()">Send →</button>
+      </div>
+    </div>
+
+    <div class="footer">Built for magicpin AI Challenge 2026 · Vera Bot v1.0.0</div>
+  </div>
 </div>
-
-<div class="container">
-  <div class="grid3">
-    <div class="card" id="ctx-card">
-      <div class="card-label">Context initialization</div>
-      <div id="loader-status" class="loader-status">
-        <div>Loading coCategories...</div>
-        <div>Loading Merchants...</div>
-        <div>Loading Triggers...</div>
-      </div>
-      <div class="form-field">
-        <label for="conf-cat">coCategory</label>
-        <select id="conf-cat" onchange="onContextChange()" disabled><option value="">— Loading —</option></select>
-      </div>
-      <div class="form-field">
-        <label for="conf-merchant">Merchant</label>
-        <select id="conf-merchant" onchange="onContextChange()" disabled><option value="">— Loading —</option></select>
-      </div>
-      <div class="form-field">
-        <label for="conf-trigger">Trigger</label>
-        <select id="conf-trigger" onchange="onContextChange()" disabled><option value="">— Loading —</option></select>
-      </div>
-      <button id="btn-start" onclick="startChat()" disabled>Start chat</button>
-      <div id="ctx-summary"></div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">Live status</div>
-      <div class="stat-row"><span>Status</span><span class="stat-val">Online</span></div>
-      <div class="stat-row"><span>Uptime</span><span class="stat-val">{uptime}s</span></div>
-      <div class="stat-row"><span>Model</span><span class="stat-val">Gemini 2.0 Flash</span></div>
-      <div class="stat-row"><span>Categories loaded</span><span class="stat-val">{counts['category']}</span></div>
-      <div class="stat-row"><span>Merchants loaded</span><span class="stat-val">{counts['merchant']}</span></div>
-      <div class="stat-row"><span>Triggers loaded</span><span class="stat-val">{counts['trigger']}</span></div>
-    </div>
-
-    <div class="card">
-      <div class="card-label">API endpoints</div>
-      <div class="endpoint"><span class="method get">GET</span>/v1/healthz</div>
-      <div class="endpoint"><span class="method get">GET</span>/v1/metadata</div>
-      <div class="endpoint"><span class="method post">POST</span>/v1/context</div>
-      <div class="endpoint"><span class="method post">POST</span>/v1/tick</div>
-      <div class="endpoint"><span class="method post">POST</span>/v1/reply</div>
-    </div>
-  </div>
-
-  <div class="chat-card">
-    <div class="chat-header">Live chat demo — talk to Vera</div>
-    <div class="messages" id="msgs">
-      <div class="msg vera">
-        <div class="label">VERA</div>
-        Hi! I'm Vera, magicpin's merchant AI. Ask me anything about your business — footfall, offers, customer recalls, or performance insights. Try: <em>"What should I do if my calls dropped 50%?"</em>
-      </div>
-    </div>
-    <div class="input-row">
-      <input id="inp" type="text" placeholder="Ask Vera something…" onkeydown="if(event.key==='Enter')send()">
-      <button onclick="send()">Send →</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-label">Architecture</div>
-    <div class="arch-grid">
-      <div class="arch-tile"><div class="at-label">Trigger kinds</div><div class="at-val">25 / 25</div></div>
-      <div class="arch-tile"><div class="at-label">Categories</div><div class="at-val">Dentists · Salons · Restaurants · Gyms · Pharmacies</div></div>
-      <div class="arch-tile"><div class="at-label">Composition</div><div class="at-val">Gemini 2.0 Flash + Rule fallback</div></div>
-      <div class="arch-tile"><div class="at-label">Reply modes</div><div class="at-val">Auto-reply · Opt-out · Intent transition</div></div>
-      <div class="arch-tile"><div class="at-label">Constraints</div><div class="at-val">≤320 chars · No URLs · Data-grounded</div></div>
-    </div>
-  </div>
-</div>
-
-<div class="footer">Built for magicpin AI Challenge 2026 · Vera Bot v1.0.0</div>
 
 <script>
   const BOT = window.location.origin;
@@ -250,33 +298,30 @@ async def homepage():
 
   async function fetchDatasets() {{
     const statusDiv = document.getElementById('loader-status');
-    statusDiv.innerHTML = '<div>Initiating dataset load...</div>';
+    statusDiv.innerHTML = '<div>› initiating dataset load...</div>';
     try {{
-      const res = await fetch(BOT+'/v1/demo/load-datasets', {{method: 'POST'}});
+      const res = await fetch(BOT+'/v1/demo/load-datasets', {{method:'POST'}});
       const counts = await res.json();
-      statusDiv.innerHTML = `<div>coCategories loaded: ${{counts.categories}}</div>
-                             <div>Merchants loaded: ${{counts.merchants}}</div>
-                             <div>Triggers loaded: ${{counts.triggers}}</div>`;
+      statusDiv.innerHTML = `<div>✓ coCategories: ${{counts.categories}}</div><div>✓ merchants: ${{counts.merchants}}</div><div>✓ triggers: ${{counts.triggers}}</div>`;
+      document.getElementById('s-cat').textContent = counts.categories;
+      document.getElementById('s-mer').textContent = counts.merchants;
+      document.getElementById('s-trg').textContent = counts.triggers;
       const ctxRes = await fetch(BOT+'/v1/demo/available-contexts');
       const ctx = await ctxRes.json();
       populateSelect('conf-cat', ctx.categories);
       populateSelect('conf-merchant', ctx.merchants);
       populateSelect('conf-trigger', ctx.triggers);
-    }} catch (e) {{
-      statusDiv.innerHTML = `<div style="color:#ef4444;">Failed to load datasets. <a href="#" onclick="fetchDatasets()">Retry</a></div>`;
+    }} catch(e) {{
+      statusDiv.innerHTML = `<div style="color:#ef4444;">✗ failed. <a href="#" onclick="fetchDatasets()" style="color:#d97706;">retry</a></div>`;
     }}
   }}
 
   function populateSelect(id, items) {{
     const sel = document.getElementById(id);
-    if (!items || items.length === 0) {{ sel.innerHTML = '<option value="">— Empty —</option>'; sel.disabled = true; return; }}
+    if (!items || !items.length) {{ sel.innerHTML = '<option value="">— empty —</option>'; sel.disabled = true; return; }}
     sel.disabled = false;
-    sel.innerHTML = '<option value="">— None selected —</option>';
-    items.forEach(item => {{
-      const opt = document.createElement('option');
-      opt.value = item; opt.textContent = item;
-      sel.appendChild(opt);
-    }});
+    sel.innerHTML = '<option value="">— none selected —</option>';
+    items.forEach(item => {{ const o = document.createElement('option'); o.value = item; o.textContent = item; sel.appendChild(o); }});
   }}
 
   function onContextChange() {{
@@ -286,12 +331,13 @@ async def homepage():
     const btn = document.getElementById('btn-start');
     btn.disabled = !(cat || mer || trg);
     MERCHANT_ID = mer;
-    if (cat || mer || trg) updateContextSummary(cat, mer, trg);
-  }}
-
-  function updateContextSummary(cat, mer, trg) {{
-    document.getElementById('ctx-summary').innerHTML =
-      `coCategory: ${{cat || 'none'}}<br>Merchant: ${{mer || 'none'}}<br>Trigger: ${{trg || 'none'}}`;
+    const sum = document.getElementById('ctx-summary');
+    if (cat || mer || trg) {{
+      sum.style.display = 'block';
+      sum.innerHTML = `coCategory: ${{cat || 'none'}}<br>Merchant: ${{mer || 'none'}}<br>Trigger: ${{trg || 'none'}}`;
+    }} else {{
+      sum.style.display = 'none';
+    }}
   }}
 
   function startChat() {{
@@ -299,16 +345,16 @@ async def homepage():
     const mer = document.getElementById('conf-merchant').value;
     const trg = document.getElementById('conf-trigger').value;
     MERCHANT_ID = mer;
-    updateContextSummary(cat, mer, trg);
+    onContextChange();
     convId = 'demo_' + Date.now();
-    document.getElementById('msgs').innerHTML = "<div class='msg vera'><div class='label'>VERA</div>Configuration updated. Hi! I'm Vera, magicpin's merchant AI. Ask me anything about your business.</div>";
+    document.getElementById('msgs').innerHTML = "<div class='msg vera'><div class='lbl'>Vera</div>Configuration updated. Hi! I'm Vera, magicpin's merchant AI. Ask me anything about your business.</div>";
   }}
 
   function addMsg(text, role) {{
     const msgs = document.getElementById('msgs');
     const d = document.createElement('div');
-    d.className = 'msg ' + (role==='vera' ? 'vera' : 'user');
-    d.innerHTML = '<div class="label">'+(role==='vera'?'VERA':'YOU')+'</div>' + text;
+    d.className = 'msg ' + (role === 'vera' ? 'vera' : 'user');
+    d.innerHTML = '<div class="lbl">' + (role === 'vera' ? 'Vera' : 'You') + '</div>' + text;
     msgs.appendChild(d);
     msgs.scrollTop = msgs.scrollHeight;
   }}
@@ -326,13 +372,13 @@ async def homepage():
         body: JSON.stringify({{
           conversation_id: convId,
           merchant_id: MERCHANT_ID || undefined,
-          from_role:'merchant', message:msg,
-          received_at:new Date().toISOString(), turn_number:2
+          from_role: 'merchant', message: msg,
+          received_at: new Date().toISOString(), turn_number: 2
         }})}});
       const data = await res.json();
       document.querySelector('.msg.vera:last-child').remove();
-      if (data.action==='send') addMsg(data.body || 'Got it!', 'vera');
-      else if (data.action==='end') addMsg('\\ud83d\\udeab Conversation ended. Refresh to start again.', 'vera');
+      if (data.action === 'send') addMsg(data.body || 'Got it!', 'vera');
+      else if (data.action === 'end') addMsg('Conversation ended. Refresh to start again.', 'vera');
       else addMsg('Backing off for now — reply later or refresh.', 'vera');
     }} catch(e) {{
       document.querySelector('.msg.vera:last-child').remove();
@@ -343,7 +389,6 @@ async def homepage():
 </body>
 </html>
 """)
-
 @app.get("/v1/healthz")
 async def healthz():
     return {
