@@ -7,6 +7,8 @@ import os
 import time
 import uuid
 import logging
+import json
+import glob
 from datetime import datetime, timezone
 from typing import Any, Optional
 
@@ -27,6 +29,8 @@ app = FastAPI(title="Vera Bot", version="1.0.0")
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_methods=["*"], allow_headers=["*"])
 
 START_TIME = time.time()
+import os
+DATA_DIR = os.getenv("DATA_DIR", os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "dataset"))
 
 # In-memory state ──────────────────────────────────────────────────────────
 # contexts[(scope, context_id)] = {"version": int, "payload": dict}
@@ -111,7 +115,7 @@ async def homepage():
   .subtitle {{ color: #94a3b8; margin-top: 8px; font-size: 1.1rem; }}
   .badge {{ display: inline-block; background: #064e3b; color: #34d399; padding: 4px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-top: 16px; border: 1px solid #34d399; }}
   .container {{ max-width: 1100px; margin: 0 auto; padding: 40px 20px; }}
-  .grid {{ display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }}
+  .grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 32px; }}
   @media(max-width:700px){{ .grid{{ grid-template-columns:1fr; }} }}
   .card {{ background: #111827; border: 1px solid #1f2937; border-radius: 16px; padding: 24px; }}
   .card h3 {{ color: #60a5fa; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }}
@@ -149,6 +153,28 @@ async def homepage():
 
 <div class="container">
   <div class="grid">
+    <div class="card" id="ctx-card">
+      <h3>🧩 Context Initialization</h3>
+      <div id="loader-status" style="margin-bottom: 16px; font-size: 0.85rem; color: #94a3b8;">
+        <div>Loading coCategories...</div>
+        <div>Loading Merchants...</div>
+        <div>Loading Triggers...</div>
+      </div>
+      <div class="stat" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+        <label for="conf-cat" style="font-size: 0.85rem; color: #94a3b8;">coCategory</label>
+        <select id="conf-cat" onchange="onContextChange()" style="width: 100%; background: #0d1117; border: 1px solid #374151; border-radius: 6px; padding: 8px 12px; color: #e2e8f0;" disabled><option value="">-- Loading --</option></select>
+      </div>
+      <div class="stat" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+        <label for="conf-merchant" style="font-size: 0.85rem; color: #94a3b8;">Merchant</label>
+        <select id="conf-merchant" onchange="onContextChange()" style="width: 100%; background: #0d1117; border: 1px solid #374151; border-radius: 6px; padding: 8px 12px; color: #e2e8f0;" disabled><option value="">-- Loading --</option></select>
+      </div>
+      <div class="stat" style="flex-direction: column; align-items: flex-start; gap: 8px; border-bottom: none;">
+        <label for="conf-trigger" style="font-size: 0.85rem; color: #94a3b8;">Trigger</label>
+        <select id="conf-trigger" onchange="onContextChange()" style="width: 100%; background: #0d1117; border: 1px solid #374151; border-radius: 6px; padding: 8px 12px; color: #e2e8f0;" disabled><option value="">-- Loading --</option></select>
+      </div>
+      <button id="btn-start" onclick="startChat()" disabled style="margin-top: 16px; width: 100%; background: #1e3a5f; color: #bfdbfe; border: 1px solid #3b82f6; border-radius: 6px; padding: 10px; cursor: pointer; font-weight: 600; font-family: 'Inter', sans-serif; opacity: 0.5;">Start Chat</button>
+      <div id="ctx-summary" style="margin-top: 16px; font-size: 0.8rem; color: #34d399; font-family: monospace;"></div>
+    </div>
     <div class="card">
       <h3>📊 Live Status</h3>
       <div class="stat"><span>Status</span><span class="stat-val">✅ Online</span></div>
@@ -231,7 +257,7 @@ async def homepage():
         scope:'merchant', context_id: MERCHANT_ID, version:1,
         delivered_at: new Date().toISOString(),
         payload:{{
-          merchant_id: MERCHANT_ID,
+          merchant_id: MERCHANT_ID || undefined,
           category_slug:'dentists',
           identity:{{
             name:"Dr. Meera's Dental Clinic",
@@ -285,14 +311,14 @@ async def homepage():
         headers:{{'Content-Type':'application/json'}},
         body: JSON.stringify({{
           conversation_id: convId,
-          merchant_id: MERCHANT_ID,
+          merchant_id: MERCHANT_ID || undefined,
           from_role:'merchant', message:msg,
           received_at:new Date().toISOString(), turn_number:2
         }})}});
       const data = await res.json();
       document.querySelector('.msg.vera:last-child').remove();
       if (data.action==='send') addMsg(data.body || 'Got it!', 'vera');
-      else if (data.action==='end') addMsg('\ud83d\udeab Conversation ended. Refresh to start again.', 'vera');
+      else if (data.action==='end') addMsg('\\ud83d\\udeab Conversation ended. Refresh to start again.', 'vera');
       else addMsg('Backing off for now — reply later or refresh.', 'vera');
     }} catch(e) {{ document.querySelector('.msg.vera:last-child').remove(); addMsg('Connection error. Try again.', 'vera'); }}
   }}
@@ -520,6 +546,53 @@ async def reply(body: ReplyBody):
         })
 
     return result
+
+@app.post("/v1/demo/load-datasets")
+async def load_datasets():
+    cat_count = 0
+    cat_files = glob.glob(os.path.join(DATA_DIR, "categories", "*.json"))
+    for cf in cat_files:
+        with open(cf, 'r') as f:
+            data = json.load(f)
+            slug = data.get("slug", os.path.basename(cf).replace(".json", ""))
+            contexts[("category", slug)] = {"version": 1, "payload": data}
+            cat_count += 1
+            
+    merch_count = 0
+    merch_file = os.path.join(DATA_DIR, "merchants_seed.json")
+    if os.path.exists(merch_file):
+        with open(merch_file, 'r') as f:
+            data = json.load(f)
+            for m in data.get("merchants", []):
+                contexts[("merchant", m["merchant_id"])] = {"version": 1, "payload": m}
+                merch_count += 1
+                
+    trig_count = 0
+    trig_file = os.path.join(DATA_DIR, "triggers_seed.json")
+    if os.path.exists(trig_file):
+        with open(trig_file, 'r') as f:
+            data = json.load(f)
+            for t in data.get("triggers", []):
+                contexts[("trigger", t["id"])] = {"version": 1, "payload": t}
+                trig_count += 1
+
+    return {
+        "categories": cat_count,
+        "merchants": merch_count,
+        "triggers": trig_count
+    }
+
+@app.get("/v1/demo/available-contexts")
+async def get_available_contexts():
+    categories = [ctx_id for (scope, ctx_id) in contexts if scope == "category"]
+    merchants = [ctx_id for (scope, ctx_id) in contexts if scope == "merchant"]
+    triggers = [ctx_id for (scope, ctx_id) in contexts if scope == "trigger"]
+    return {
+        "categories": sorted(categories),
+        "merchants": sorted(merchants),
+        "triggers": sorted(triggers)
+    }
+
 
 
 @app.post("/v1/teardown")
