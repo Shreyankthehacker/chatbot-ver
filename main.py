@@ -108,84 +108,101 @@ async def homepage():
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
   * {{ margin: 0; padding: 0; box-sizing: border-box; }}
-  body {{ font-family: 'Inter', sans-serif; background: #0a0a0f; color: #e2e8f0; min-height: 100vh; }}
-  .hero {{ background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); padding: 60px 20px; text-align: center; border-bottom: 1px solid #1e3a5f; }}
-  .logo {{ font-size: 48px; margin-bottom: 12px; }}
-  h1 {{ font-size: 2.5rem; font-weight: 700; background: linear-gradient(90deg, #60a5fa, #a78bfa, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }}
-  .subtitle {{ color: #94a3b8; margin-top: 8px; font-size: 1.1rem; }}
-  .badge {{ display: inline-block; background: #064e3b; color: #34d399; padding: 4px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; margin-top: 16px; border: 1px solid #34d399; }}
-  .container {{ max-width: 1100px; margin: 0 auto; padding: 40px 20px; }}
-  .grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 32px; }}
-  @media(max-width:700px){{ .grid{{ grid-template-columns:1fr; }} }}
-  .card {{ background: #111827; border: 1px solid #1f2937; border-radius: 16px; padding: 24px; }}
-  .card h3 {{ color: #60a5fa; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }}
-  .stat {{ display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #1f2937; }}
-  .stat:last-child {{ border-bottom: none; }}
-  .stat-val {{ color: #34d399; font-weight: 600; font-size: 1.1rem; }}
-  .endpoint {{ background: #0d1117; border: 1px solid #1f2937; border-radius: 10px; padding: 12px 16px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; font-family: monospace; font-size: 0.9rem; }}
-  .method {{ padding: 3px 10px; border-radius: 6px; font-weight: 700; font-size: 0.75rem; }}
-  .get {{ background: #064e3b; color: #34d399; }}
-  .post {{ background: #1e1b4b; color: #a78bfa; }}
-  .chat-box {{ background: #111827; border: 1px solid #1f2937; border-radius: 16px; padding: 24px; margin-bottom: 32px; }}
-  .chat-box h3 {{ color: #60a5fa; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }}
-  .messages {{ height: 300px; overflow-y: auto; background: #0d1117; border-radius: 10px; padding: 16px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 10px; }}
-  .msg {{ padding: 10px 14px; border-radius: 10px; max-width: 85%; font-size: 0.9rem; line-height: 1.5; }}
-  .msg.vera {{ background: #1e3a5f; color: #bfdbfe; align-self: flex-start; border-bottom-left-radius: 2px; }}
-  .msg.user {{ background: #1e1b4b; color: #ddd6fe; align-self: flex-end; border-bottom-right-radius: 2px; }}
-  .msg .label {{ font-size: 0.7rem; opacity: 0.6; margin-bottom: 4px; font-weight: 600; }}
-  .input-row {{ display: flex; gap: 10px; }}
-  .input-row input {{ flex: 1; background: #0d1117; border: 1px solid #374151; border-radius: 10px; padding: 12px 16px; color: #e2e8f0; font-family: 'Inter', sans-serif; font-size: 0.95rem; outline: none; }}
-  .input-row input:focus {{ border-color: #60a5fa; }}
-  .input-row button {{ background: linear-gradient(135deg, #3b82f6, #8b5cf6); color: white; border: none; border-radius: 10px; padding: 12px 24px; cursor: pointer; font-weight: 600; font-size: 0.95rem; transition: opacity 0.2s; }}
-  .input-row button:hover {{ opacity: 0.85; }}
-  .footer {{ text-align: center; color: #4b5563; font-size: 0.85rem; padding: 20px; }}
-  .ping {{ display: inline-block; width: 8px; height: 8px; background: #34d399; border-radius: 50%; margin-right: 6px; animation: pulse 2s infinite; }}
+  body {{ font-family: 'Inter', sans-serif; background: #f8f9fb; color: #111827; min-height: 100vh; }}
+  .hero {{ background: #ffffff; border-bottom: 1px solid #e5e7eb; padding: 40px 24px 32px; text-align: center; }}
+  .logo-ring {{ width: 56px; height: 56px; border-radius: 50%; background: #eff6ff; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-size: 24px; }}
+  h1 {{ font-size: 22px; font-weight: 600; color: #111827; margin-bottom: 4px; }}
+  .subtitle {{ color: #6b7280; font-size: 14px; }}
+  .badge {{ display: inline-flex; align-items: center; gap: 6px; background: #f0fdf4; color: #15803d; padding: 4px 12px; border-radius: 8px; font-size: 12px; font-weight: 500; margin-top: 14px; border: 1px solid #bbf7d0; }}
+  .ping {{ width: 7px; height: 7px; background: #22c55e; border-radius: 50%; animation: pulse 2s infinite; }}
   @keyframes pulse {{ 0%,100%{{opacity:1;}} 50%{{opacity:0.3;}} }}
+  .container {{ max-width: 1040px; margin: 0 auto; padding: 28px 20px; }}
+  .grid3 {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin-bottom: 20px; }}
+  @media(max-width:640px) {{ .grid3 {{ grid-template-columns: 1fr; }} }}
+  .card {{ background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 20px; }}
+  .card-label {{ font-size: 11px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; }}
+  .stat-row {{ display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid #f3f4f6; font-size: 13px; color: #374151; }}
+  .stat-row:last-child {{ border-bottom: none; }}
+  .stat-val {{ font-weight: 600; color: #16a34a; }}
+  .endpoint {{ display: flex; align-items: center; gap: 10px; padding: 9px 12px; background: #f9fafb; border-radius: 8px; margin-bottom: 6px; font-size: 12px; font-family: monospace; color: #374151; }}
+  .method {{ padding: 2px 8px; border-radius: 4px; font-weight: 600; font-size: 10px; font-family: 'Inter', sans-serif; }}
+  .get {{ background: #f0fdf4; color: #15803d; }}
+  .post {{ background: #eff6ff; color: #1d4ed8; }}
+  .form-field {{ display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }}
+  .form-field label {{ font-size: 12px; color: #6b7280; }}
+  .form-field select {{ background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 8px 12px; color: #111827; font-family: 'Inter', sans-serif; font-size: 13px; outline: none; }}
+  .form-field select:focus {{ border-color: #93c5fd; }}
+  #btn-start {{ width: 100%; padding: 9px; font-size: 13px; font-weight: 600; margin-top: 6px; background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; border-radius: 8px; cursor: pointer; font-family: 'Inter', sans-serif; transition: background 0.15s; }}
+  #btn-start:hover:not(:disabled) {{ background: #dbeafe; }}
+  #btn-start:disabled {{ opacity: 0.45; cursor: not-allowed; }}
+  #ctx-summary {{ margin-top: 12px; font-size: 11px; font-family: monospace; color: #16a34a; line-height: 1.8; }}
+  .loader-status {{ font-size: 12px; color: #6b7280; margin-bottom: 14px; line-height: 1.8; }}
+  .chat-card {{ background: #ffffff; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; margin-bottom: 20px; }}
+  .chat-header {{ padding: 14px 20px; border-bottom: 1px solid #f3f4f6; font-size: 11px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.06em; }}
+  .messages {{ height: 280px; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; background: #f8f9fb; }}
+  .msg {{ padding: 10px 14px; border-radius: 12px; max-width: 82%; font-size: 13px; line-height: 1.55; }}
+  .msg.vera {{ background: #ffffff; border: 1px solid #e5e7eb; align-self: flex-start; border-bottom-left-radius: 4px; color: #111827; }}
+  .msg.user {{ background: #eff6ff; border: 1px solid #bfdbfe; align-self: flex-end; border-bottom-right-radius: 4px; color: #1d4ed8; }}
+  .msg .label {{ font-size: 10px; font-weight: 600; color: #9ca3af; margin-bottom: 4px; }}
+  .msg.user .label {{ color: #60a5fa; }}
+  .input-row {{ display: flex; gap: 10px; padding: 14px 16px; border-top: 1px solid #f3f4f6; }}
+  .input-row input {{ flex: 1; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; padding: 9px 14px; color: #111827; font-family: 'Inter', sans-serif; font-size: 13px; outline: none; }}
+  .input-row input:focus {{ border-color: #93c5fd; }}
+  .input-row button {{ background: #1d4ed8; color: white; border: none; border-radius: 8px; padding: 9px 20px; cursor: pointer; font-weight: 600; font-size: 13px; font-family: 'Inter', sans-serif; transition: background 0.15s; }}
+  .input-row button:hover {{ background: #1e40af; }}
+  .arch-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }}
+  .arch-tile {{ background: #f9fafb; border-radius: 8px; padding: 14px; }}
+  .arch-tile .at-label {{ font-size: 11px; color: #9ca3af; margin-bottom: 4px; }}
+  .arch-tile .at-val {{ font-size: 13px; font-weight: 500; color: #111827; }}
+  .footer {{ text-align: center; color: #9ca3af; font-size: 12px; padding: 20px; }}
 </style>
 </head>
 <body>
+
 <div class="hero">
-  <div class="logo">🤖</div>
+  <div class="logo-ring">🤖</div>
   <h1>Vera Bot</h1>
   <p class="subtitle">magicpin AI Challenge — Merchant Intelligence Engine</p>
-  <div class="badge"><span class="ping"></span>LIVE · Gemini 2.0 Flash · 30/30 Tests Passing</div>
+  <div class="badge"><span class="ping"></span>Live · Gemini 2.0 Flash · 30/30 tests passing</div>
 </div>
 
 <div class="container">
-  <div class="grid">
+  <div class="grid3">
     <div class="card" id="ctx-card">
-      <h3>🧩 Context Initialization</h3>
-      <div id="loader-status" style="margin-bottom: 16px; font-size: 0.85rem; color: #94a3b8;">
+      <div class="card-label">Context initialization</div>
+      <div id="loader-status" class="loader-status">
         <div>Loading coCategories...</div>
         <div>Loading Merchants...</div>
         <div>Loading Triggers...</div>
       </div>
-      <div class="stat" style="flex-direction: column; align-items: flex-start; gap: 8px;">
-        <label for="conf-cat" style="font-size: 0.85rem; color: #94a3b8;">coCategory</label>
-        <select id="conf-cat" onchange="onContextChange()" style="width: 100%; background: #0d1117; border: 1px solid #374151; border-radius: 6px; padding: 8px 12px; color: #e2e8f0;" disabled><option value="">-- Loading --</option></select>
+      <div class="form-field">
+        <label for="conf-cat">coCategory</label>
+        <select id="conf-cat" onchange="onContextChange()" disabled><option value="">— Loading —</option></select>
       </div>
-      <div class="stat" style="flex-direction: column; align-items: flex-start; gap: 8px;">
-        <label for="conf-merchant" style="font-size: 0.85rem; color: #94a3b8;">Merchant</label>
-        <select id="conf-merchant" onchange="onContextChange()" style="width: 100%; background: #0d1117; border: 1px solid #374151; border-radius: 6px; padding: 8px 12px; color: #e2e8f0;" disabled><option value="">-- Loading --</option></select>
+      <div class="form-field">
+        <label for="conf-merchant">Merchant</label>
+        <select id="conf-merchant" onchange="onContextChange()" disabled><option value="">— Loading —</option></select>
       </div>
-      <div class="stat" style="flex-direction: column; align-items: flex-start; gap: 8px; border-bottom: none;">
-        <label for="conf-trigger" style="font-size: 0.85rem; color: #94a3b8;">Trigger</label>
-        <select id="conf-trigger" onchange="onContextChange()" style="width: 100%; background: #0d1117; border: 1px solid #374151; border-radius: 6px; padding: 8px 12px; color: #e2e8f0;" disabled><option value="">-- Loading --</option></select>
+      <div class="form-field">
+        <label for="conf-trigger">Trigger</label>
+        <select id="conf-trigger" onchange="onContextChange()" disabled><option value="">— Loading —</option></select>
       </div>
-      <button id="btn-start" onclick="startChat()" disabled style="margin-top: 16px; width: 100%; background: #1e3a5f; color: #bfdbfe; border: 1px solid #3b82f6; border-radius: 6px; padding: 10px; cursor: pointer; font-weight: 600; font-family: 'Inter', sans-serif; opacity: 0.5;">Start Chat</button>
-      <div id="ctx-summary" style="margin-top: 16px; font-size: 0.8rem; color: #34d399; font-family: monospace;"></div>
+      <button id="btn-start" onclick="startChat()" disabled>Start chat</button>
+      <div id="ctx-summary"></div>
     </div>
+
     <div class="card">
-      <h3>📊 Live Status</h3>
-      <div class="stat"><span>Status</span><span class="stat-val">✅ Online</span></div>
-      <div class="stat"><span>Uptime</span><span class="stat-val">{uptime}s</span></div>
-      <div class="stat"><span>Model</span><span class="stat-val">Gemini 2.0 Flash</span></div>
-      <div class="stat"><span>Categories loaded</span><span class="stat-val">{counts['category']}</span></div>
-      <div class="stat"><span>Merchants loaded</span><span class="stat-val">{counts['merchant']}</span></div>
-      <div class="stat"><span>Triggers loaded</span><span class="stat-val">{counts['trigger']}</span></div>
+      <div class="card-label">Live status</div>
+      <div class="stat-row"><span>Status</span><span class="stat-val">Online</span></div>
+      <div class="stat-row"><span>Uptime</span><span class="stat-val">{uptime}s</span></div>
+      <div class="stat-row"><span>Model</span><span class="stat-val">Gemini 2.0 Flash</span></div>
+      <div class="stat-row"><span>Categories loaded</span><span class="stat-val">{counts['category']}</span></div>
+      <div class="stat-row"><span>Merchants loaded</span><span class="stat-val">{counts['merchant']}</span></div>
+      <div class="stat-row"><span>Triggers loaded</span><span class="stat-val">{counts['trigger']}</span></div>
     </div>
+
     <div class="card">
-      <h3>🔌 API Endpoints</h3>
+      <div class="card-label">API endpoints</div>
       <div class="endpoint"><span class="method get">GET</span>/v1/healthz</div>
       <div class="endpoint"><span class="method get">GET</span>/v1/metadata</div>
       <div class="endpoint"><span class="method post">POST</span>/v1/context</div>
@@ -194,24 +211,29 @@ async def homepage():
     </div>
   </div>
 
-  <div class="chat-box">
-    <h3>💬 Live Chat Demo — Talk to Vera</h3>
+  <div class="chat-card">
+    <div class="chat-header">Live chat demo — talk to Vera</div>
     <div class="messages" id="msgs">
-      <div class="msg vera"><div class="label">VERA</div>Hi! I'm Vera, magicpin's merchant AI. Ask me anything about your business — footfall, offers, customer recalls, or performance insights. Try: <em>"What should I do if my calls dropped 50%?"</em></div>
+      <div class="msg vera">
+        <div class="label">VERA</div>
+        Hi! I'm Vera, magicpin's merchant AI. Ask me anything about your business — footfall, offers, customer recalls, or performance insights. Try: <em>"What should I do if my calls dropped 50%?"</em>
+      </div>
     </div>
     <div class="input-row">
-      <input id="inp" type="text" placeholder="Ask Vera something..." onkeydown="if(event.key==='Enter')send()">
+      <input id="inp" type="text" placeholder="Ask Vera something…" onkeydown="if(event.key==='Enter')send()">
       <button onclick="send()">Send →</button>
     </div>
   </div>
 
   <div class="card">
-    <h3>🏗️ Architecture</h3>
-    <div class="stat"><span>Trigger kinds covered</span><span class="stat-val">25 / 25</span></div>
-    <div class="stat"><span>Categories</span><span class="stat-val">Dentists · Salons · Restaurants · Gyms · Pharmacies</span></div>
-    <div class="stat"><span>Composition engine</span><span class="stat-val">Gemini 2.0 Flash + Rule fallback</span></div>
-    <div class="stat"><span>Reply handling</span><span class="stat-val">Auto-reply · Opt-out · Intent transition</span></div>
-    <div class="stat"><span>Message constraints</span><span class="stat-val">≤320 chars · No URLs · Data-grounded</span></div>
+    <div class="card-label">Architecture</div>
+    <div class="arch-grid">
+      <div class="arch-tile"><div class="at-label">Trigger kinds</div><div class="at-val">25 / 25</div></div>
+      <div class="arch-tile"><div class="at-label">Categories</div><div class="at-val">Dentists · Salons · Restaurants · Gyms · Pharmacies</div></div>
+      <div class="arch-tile"><div class="at-label">Composition</div><div class="at-val">Gemini 2.0 Flash + Rule fallback</div></div>
+      <div class="arch-tile"><div class="at-label">Reply modes</div><div class="at-val">Auto-reply · Opt-out · Intent transition</div></div>
+      <div class="arch-tile"><div class="at-label">Constraints</div><div class="at-val">≤320 chars · No URLs · Data-grounded</div></div>
+    </div>
   </div>
 </div>
 
@@ -219,76 +241,68 @@ async def homepage():
 
 <script>
   const BOT = window.location.origin;
-  let convId = 'demo_meera_' + Date.now();
-  // Real merchant from dataset: m_001_drmeera_dentist_delhi
-  const MERCHANT_ID = 'm_001_drmeera_dentist_delhi';
+  let convId = 'demo_' + Date.now();
+  let MERCHANT_ID = '';
 
-  async function loadDemo() {{
-    // REAL category context from dataset/categories/dentists.json
-    await fetch(BOT+'/v1/context', {{method:'POST',headers:{{'Content-Type':'application/json'}},
-      body: JSON.stringify({{
-        scope:'category', context_id:'dentists', version:1,
-        delivered_at: new Date().toISOString(),
-        payload:{{
-          slug:'dentists',
-          voice:{{tone:'peer_clinical', register:'doctor_to_doctor', vocab_taboo:['guaranteed','cure','permanent fix']}},
-          offer_catalog:[
-            {{id:'den_001',title:'Dental Cleaning @ \u20b9299',value:'299',anchor:'MRP \u20b9699'}},
-            {{id:'den_002',title:'Root Canal (Single Sitting) @ \u20b92499',value:'2499'}},
-            {{id:'den_003',title:'Clear Aligner Consult (Free)',value:'0'}}
-          ],
-          peer_stats:{{avg_rating:4.4, avg_calls_30d:12, avg_ctr:0.030, retention_6mo_pct:0.52}},
-          digest:[{{
-            id:'d_2026W17_jida_fluoride', kind:'research',
-            title:'3-month fluoride recall cuts caries 38% better than 6-month',
-            source:'JIDA Oct 2026, p.14', trial_n:2100, patient_segment:'high_risk_adults'
-          }}],
-          seasonal_beats:[
-            {{month_range:'Nov-Feb', note:'exam-stress bruxism spike — night guards'}},
-            {{month_range:'Mar-May', note:'wedding season aligners surge'}}
-          ],
-          trend_signals:[{{query:'clear aligners delhi', delta_yoy:0.62}}]
-        }}
-      }})
-    }})
-    // REAL merchant context from dataset/merchants_seed.json — m_001_drmeera_dentist_delhi
-    await fetch(BOT+'/v1/context', {{method:'POST',headers:{{'Content-Type':'application/json'}},
-      body: JSON.stringify({{
-        scope:'merchant', context_id: MERCHANT_ID, version:1,
-        delivered_at: new Date().toISOString(),
-        payload:{{
-          merchant_id: MERCHANT_ID || undefined,
-          category_slug:'dentists',
-          identity:{{
-            name:"Dr. Meera's Dental Clinic",
-            city:'Delhi', locality:'Lajpat Nagar',
-            verified:true, languages:['en','hi'],
-            owner_first_name:'Meera', established_year:2018
-          }},
-          subscription:{{status:'active', plan:'Pro', days_remaining:82}},
-          performance:{{
-            window_days:30, views:2410, calls:18, ctr:0.021,
-            delta_7d:{{views_pct:0.18, calls_pct:-0.05}}
-          }},
-          offers:[
-            {{id:'o_meera_001',title:'Dental Cleaning @ \u20b9299',status:'active',started:'2026-03-01'}},
-            {{id:'o_meera_002',title:'Deep Cleaning @ \u20b9499',status:'expired'}}
-          ],
-          customer_aggregate:{{
-            total_unique_ytd:540, lapsed_180d_plus:78,
-            retention_6mo_pct:0.38, high_risk_adult_count:124
-          }},
-          signals:['stale_posts:22d','ctr_below_peer_median','high_risk_adult_cohort'],
-          conversation_history:[],
-          review_themes:[
-            {{theme:'wait_time',sentiment:'neg',occurrences_30d:3,common_quote:'had to wait 30 min on Sunday'}},
-            {{theme:'doctor_manner',sentiment:'pos',occurrences_30d:5,common_quote:'Dr. Meera explains everything patiently'}}
-          ]
-        }}
-      }})
-    }})
+  document.addEventListener("DOMContentLoaded", async () => {{
+    await fetchDatasets();
+  }});
+
+  async function fetchDatasets() {{
+    const statusDiv = document.getElementById('loader-status');
+    statusDiv.innerHTML = '<div>Initiating dataset load...</div>';
+    try {{
+      const res = await fetch(BOT+'/v1/demo/load-datasets', {{method: 'POST'}});
+      const counts = await res.json();
+      statusDiv.innerHTML = `<div>coCategories loaded: ${{counts.categories}}</div>
+                             <div>Merchants loaded: ${{counts.merchants}}</div>
+                             <div>Triggers loaded: ${{counts.triggers}}</div>`;
+      const ctxRes = await fetch(BOT+'/v1/demo/available-contexts');
+      const ctx = await ctxRes.json();
+      populateSelect('conf-cat', ctx.categories);
+      populateSelect('conf-merchant', ctx.merchants);
+      populateSelect('conf-trigger', ctx.triggers);
+    }} catch (e) {{
+      statusDiv.innerHTML = `<div style="color:#ef4444;">Failed to load datasets. <a href="#" onclick="fetchDatasets()">Retry</a></div>`;
+    }}
   }}
-  loadDemo();
+
+  function populateSelect(id, items) {{
+    const sel = document.getElementById(id);
+    if (!items || items.length === 0) {{ sel.innerHTML = '<option value="">— Empty —</option>'; sel.disabled = true; return; }}
+    sel.disabled = false;
+    sel.innerHTML = '<option value="">— None selected —</option>';
+    items.forEach(item => {{
+      const opt = document.createElement('option');
+      opt.value = item; opt.textContent = item;
+      sel.appendChild(opt);
+    }});
+  }}
+
+  function onContextChange() {{
+    const cat = document.getElementById('conf-cat').value;
+    const mer = document.getElementById('conf-merchant').value;
+    const trg = document.getElementById('conf-trigger').value;
+    const btn = document.getElementById('btn-start');
+    btn.disabled = !(cat || mer || trg);
+    MERCHANT_ID = mer;
+    if (cat || mer || trg) updateContextSummary(cat, mer, trg);
+  }}
+
+  function updateContextSummary(cat, mer, trg) {{
+    document.getElementById('ctx-summary').innerHTML =
+      `coCategory: ${{cat || 'none'}}<br>Merchant: ${{mer || 'none'}}<br>Trigger: ${{trg || 'none'}}`;
+  }}
+
+  function startChat() {{
+    const cat = document.getElementById('conf-cat').value;
+    const mer = document.getElementById('conf-merchant').value;
+    const trg = document.getElementById('conf-trigger').value;
+    MERCHANT_ID = mer;
+    updateContextSummary(cat, mer, trg);
+    convId = 'demo_' + Date.now();
+    document.getElementById('msgs').innerHTML = "<div class='msg vera'><div class='label'>VERA</div>Configuration updated. Hi! I'm Vera, magicpin's merchant AI. Ask me anything about your business.</div>";
+  }}
 
   function addMsg(text, role) {{
     const msgs = document.getElementById('msgs');
@@ -305,7 +319,7 @@ async def homepage():
     if (!msg) return;
     inp.value = '';
     addMsg(msg, 'user');
-    addMsg('Thinking...', 'vera');
+    addMsg('Thinking…', 'vera');
     try {{
       const res = await fetch(BOT+'/v1/reply', {{method:'POST',
         headers:{{'Content-Type':'application/json'}},
@@ -320,11 +334,15 @@ async def homepage():
       if (data.action==='send') addMsg(data.body || 'Got it!', 'vera');
       else if (data.action==='end') addMsg('\\ud83d\\udeab Conversation ended. Refresh to start again.', 'vera');
       else addMsg('Backing off for now — reply later or refresh.', 'vera');
-    }} catch(e) {{ document.querySelector('.msg.vera:last-child').remove(); addMsg('Connection error. Try again.', 'vera'); }}
+    }} catch(e) {{
+      document.querySelector('.msg.vera:last-child').remove();
+      addMsg('Connection error. Try again.', 'vera');
+    }}
   }}
 </script>
+</body>
+</html>
 """)
-
 
 @app.get("/v1/healthz")
 async def healthz():
